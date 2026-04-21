@@ -19,19 +19,28 @@ public class ListBasedDiGraph implements DiGraph {
 	@Override
 	public Boolean removeNode(GraphNode node) {
 		// TODO Auto-generated method stub
-		return null;
+		if(nodeList.contains(node)) {
+			nodeList.remove(node);
+			return true;
+		}
+		
+		return false;
 	}
 
 	@Override
 	public Boolean setNodeValue(GraphNode node, String newNodeValue) {
 		// TODO Auto-generated method stub
-		return null;
+		if(nodeList.contains(node)) {
+			node.setValue(newNodeValue);
+			return true;
+		}
+		return false;
 	}
 
 	@Override
 	public String getNodeValue(GraphNode node) {
 		// TODO Auto-generated method stub
-		return null;
+		return node.getValue();
 	}
 
 	@Override
@@ -52,36 +61,54 @@ public class ListBasedDiGraph implements DiGraph {
 	@Override
 	public Boolean removeEdge(GraphNode fromNode, GraphNode toNode) {
 		// TODO Auto-generated method stub
-		return null;
+		if(fromNode.getNeighbors().contains(toNode)) {
+			fromNode.removeNeighbor(toNode);
+			return true;
+		}
+		
+		return false;
 	}
 
 	@Override
 	public Boolean setEdgeValue(GraphNode fromNode, GraphNode toNode, Integer newWeight) {
 		// TODO Auto-generated method stub
-		return null;
+		if(fromNode.getNeighbors().contains(toNode)) {
+			fromNode.removeNeighbor(toNode);
+			fromNode.addNeighbor(toNode, newWeight);
+			return true;
+		}
+		
+		return false;
 	}
 
 	@Override
 	public Integer getEdgeValue(GraphNode fromNode, GraphNode toNode) {
 		// TODO Auto-generated method stub
+		if(fromNode.getNeighbors().contains(toNode)) {
+			return fromNode.getDistanceToNeighbor(toNode);
+		}
 		return null;
 	}
 
 	@Override
 	public List<GraphNode> getAdjacentNodes(GraphNode node) {
 		// TODO Auto-generated method stub
-		return null;
+		return node.getNeighbors();
 	}
 
 	@Override
 	public Boolean nodesAreAdjacent(GraphNode fromNode, GraphNode toNode) {
 		// TODO Auto-generated method stub
-		return null;
+		if(fromNode.getNeighbors().contains(toNode) || toNode.getNeighbors().contains(fromNode)) {
+			return true;
+		}
+		return false;
 	}
 
 	@Override
 	public Boolean nodeIsReachable(GraphNode fromNode, GraphNode toNode) {
 		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
