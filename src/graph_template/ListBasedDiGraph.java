@@ -1,8 +1,11 @@
-
 package graph_template;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import java.util.Set;
  
 //LeedleeleedlleeLeeee
 
@@ -11,26 +14,28 @@ public class ListBasedDiGraph implements DiGraph {
 
 	@Override
 	public Boolean addNode(GraphNode node) {
-		
-		nodeList.add(node);
-		return true;
+		if(!nodeList.contains(node)) {
+			nodeList.add(node);			
+			return true;
+		}
+		return false;
 	}
 
 	@Override
 	public Boolean removeNode(GraphNode node) {
-		// TODO Auto-generated method stub
 		if(nodeList.contains(node)) {
 			nodeList.remove(node);
+			for(GraphNode otherNode : nodeList) {
+				removeEdge(node, otherNode);
+			}
 			return true;
 		}
-		
 		return false;
 	}
 
 	@Override
 	public Boolean setNodeValue(GraphNode node, String newNodeValue) {
-		// TODO Auto-generated method stub
-		if(nodeList.contains(node)) {
+		if(nodeList.contains(node)) { // fix logic
 			node.setValue(newNodeValue);
 			return true;
 		}
@@ -39,17 +44,17 @@ public class ListBasedDiGraph implements DiGraph {
 
 	@Override
 	public String getNodeValue(GraphNode node) {
-		// TODO Auto-generated method stub
 		return node.getValue();
 	}
 
 	@Override
 	public Boolean addEdge(GraphNode fromNode, GraphNode toNode, Integer weight) {
 
-		//BAD
-		fromNode.addNeighbor(toNode, weight);
+		// TODO
+		// BAD
+		// fromNode.addNeighbor(toNode, weight);
 		
-		//GOOD
+		// GOOD
 		GraphNode targetFromNode = getNode(fromNode.getValue());
 		GraphNode targetToNode = getNode(toNode.getValue());
 	 	 
@@ -60,7 +65,6 @@ public class ListBasedDiGraph implements DiGraph {
 
 	@Override
 	public Boolean removeEdge(GraphNode fromNode, GraphNode toNode) {
-		// TODO Auto-generated method stub
 		if(fromNode.getNeighbors().contains(toNode)) {
 			fromNode.removeNeighbor(toNode);
 			return true;
@@ -71,7 +75,6 @@ public class ListBasedDiGraph implements DiGraph {
 
 	@Override
 	public Boolean setEdgeValue(GraphNode fromNode, GraphNode toNode, Integer newWeight) {
-		// TODO Auto-generated method stub
 		if(fromNode.getNeighbors().contains(toNode)) {
 			fromNode.removeNeighbor(toNode);
 			fromNode.addNeighbor(toNode, newWeight);
@@ -83,7 +86,6 @@ public class ListBasedDiGraph implements DiGraph {
 
 	@Override
 	public Integer getEdgeValue(GraphNode fromNode, GraphNode toNode) {
-		// TODO Auto-generated method stub
 		if(fromNode.getNeighbors().contains(toNode)) {
 			return fromNode.getDistanceToNeighbor(toNode);
 		}
@@ -92,13 +94,11 @@ public class ListBasedDiGraph implements DiGraph {
 
 	@Override
 	public List<GraphNode> getAdjacentNodes(GraphNode node) {
-		// TODO Auto-generated method stub
 		return node.getNeighbors();
 	}
 
 	@Override
 	public Boolean nodesAreAdjacent(GraphNode fromNode, GraphNode toNode) {
-		// TODO Auto-generated method stub
 		if(fromNode.getNeighbors().contains(toNode) || toNode.getNeighbors().contains(fromNode)) {
 			return true;
 		}
@@ -107,9 +107,43 @@ public class ListBasedDiGraph implements DiGraph {
 
 	@Override
 	public Boolean nodeIsReachable(GraphNode fromNode, GraphNode toNode) {
-		// TODO Auto-generated method stub
-		
-		return null;
+		// create queue to manage nodes
+				Queue<GraphNode> queue = new LinkedList<GraphNode>();
+				// create set to manage visitedNodes
+				Set<GraphNode> visitedNodes = new HashSet<GraphNode>();
+				
+				// (preliminary)
+				if(fromNode.equals(toNode)) // if can reach itself
+				{
+					return true;
+				}
+				
+				queue.add(fromNode);
+				visitedNodes.add(fromNode);
+
+				//start from the targetFromNode
+				while(!queue.isEmpty())
+				{
+					GraphNode current = queue.poll();
+					List<GraphNode> neighborList = current.getNeighbors();
+					
+					//for all neighbors:
+					for(GraphNode neighbor : neighborList)
+					{
+						//check if visited.  If not, add to the queue.  
+						if(!visitedNodes.contains(neighbor))
+						{
+							queue.add(neighbor); // linkedlist add => enqueue op
+							visitedNodes.add(neighbor);
+						}
+						//if targetToNode has been visited, return true
+						if(neighbor.equals(toNode))
+						{
+							return true;
+						}
+					}	
+				}
+				return false; // unreached through all neighbors
 	}
 
 	@Override
