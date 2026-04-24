@@ -1,11 +1,14 @@
 package graph_template;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
+
  
 //LeedleeleedlleeLeeee
 
@@ -170,7 +173,43 @@ public class ListBasedDiGraph implements DiGraph {
 	@Override
 	public int fewestHops(GraphNode fromNode, GraphNode toNode) {
 		// TODO Auto-generated method stub
+		GraphNode targetFromNode = getNode(fromNode.getValue());
+		GraphNode targetToNode = getNode(toNode.getValue());
+		Queue<GraphNode> queue = new LinkedList<>();
+		Set<GraphNode> visitedNodes = new HashSet<>();
+		Map<GraphNode, Integer> pathMap = new HashMap<>();	
+		
+		queue.add(targetFromNode);
+		visitedNodes.add(targetFromNode);
+		pathMap.put(targetFromNode, 0);
+ 		
+		//TODO - traverse the graph BF.  
+		while (queue.peek() != null) {  
+ 
+			GraphNode current = queue.poll();
+			List<GraphNode> neighborList = current.getNeighbors();
+			
+			//TODO - keep track of neighbors visited && increment hops if not
+			//TODO - iterate over all the neighbors of this node
+			for(GraphNode neighbor : neighborList)
+			{
+				if(!visitedNodes.contains(neighbor))
+				{
+					visitedNodes.add(neighbor);
+					queue.add(neighbor);
+					pathMap.put(neighbor, pathMap.get(current) + 1);
+				}
+				
+				//TODO - IF target reached, done. Return number of hops
+				if(neighbor.getValue().equals(targetToNode.getValue()))
+				{
+					return pathMap.get(neighbor);
+				}
+			}
+ 		}
+
 		return 0;
+
 	}
 
 	@Override
