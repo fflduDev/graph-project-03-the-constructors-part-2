@@ -115,20 +115,24 @@ public class ListBasedDiGraph implements DiGraph {
 				// create set to manage visitedNodes
 				Set<GraphNode> visitedNodes = new HashSet<GraphNode>();
 				
-				// (preliminary)
-				if(fromNode.equals(toNode)) // if can reach itself
-				{
-					return true;
-				}
+//				// (preliminary)
+//				if(fromNode.equals(toNode)) // if can reach itself
+//				{
+//					return true;
+//				}
+				// obsolete; we can't say this is necessarily
+				// true, because a node may very well not have
+				// a directed route back to itself (dead ends).
 				
 				queue.add(fromNode);
 				visitedNodes.add(fromNode);
+				List<GraphNode> neighborList;
 
 				//start from the targetFromNode
 				while(!queue.isEmpty())
 				{
 					GraphNode current = queue.poll();
-					List<GraphNode> neighborList = current.getNeighbors();
+					neighborList = current.getNeighbors(); // TODO THIS LINE DOES NOT WORK CORRECTLY
 					
 					//for all neighbors:
 					for(GraphNode neighbor : neighborList)
@@ -140,7 +144,7 @@ public class ListBasedDiGraph implements DiGraph {
 							visitedNodes.add(neighbor);
 						}
 						//if targetToNode has been visited, return true
-						if(neighbor.equals(toNode))
+						if(neighbor.getValue().equals(toNode.getValue()))
 						{
 							return true;
 						}
@@ -152,7 +156,14 @@ public class ListBasedDiGraph implements DiGraph {
 	@Override
 	public Boolean hasCycles() {
 		// TODO Auto-generated method stub
-		return null;
+		for(GraphNode node : nodeList)
+		{
+			if(nodeIsReachable(node, node))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override

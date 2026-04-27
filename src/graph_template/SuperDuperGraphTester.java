@@ -31,15 +31,36 @@ public class SuperDuperGraphTester {
 		
 		TESTaddEdge("Denver", "Atlanta", 1400);	
 		TESTaddEdge("Chicago", "Denver", 1000);	
+		
+		/**
+		 *  Austin -- 200 -> Dallas
+		 *  	   -- 160 -> Houston
+		 *  
+		 *  Atlanta -- 180 -> Houston
+		 *  
+		 *  Chicago -- 1000 -> Denver
+		 *  
+		 *  Dallas -- 200 -> Austin
+		 *  	   -- 900 -> Chicago
+		 *  	   -- 780 -> Denver
+		 *  
+		 *  Denver -- 1400 -> Atlanta
+		 *  	   -- 1000 -> Chicago
+		 *  
+		 *  Houston -- 180 -> Atlanta
+		 *  
+		 *  Washington -- 1300 -> Dallas
+		 */
 	
 		
-		TESTdescribeGraph();
-		TESThasCycles();
-		TESTnodeIsReachable("Austin", "Washington");
-		TESTnodeIsReachable("Chicago", "Houston");
+		TESTdescribeGraph(); 
+		TESThasCycles(); // TRUE (e.g. Austin, Dallas)
+		TESTnodeIsReachable("Austin", "Washington"); // FALSE: No directed path to Washington
+		TESTnodeIsReachable("Chicago", "Houston"); // TRUE: Chicago -> Denver -> Atlanta -> Houston
 		
-		TESTfewestHops("Austin", "Chicago");
-		TESTshortestPath("Washington", "Atlanta");
+		TESTfewestHops("Austin", "Chicago"); // 2: Austin -> Dallas (1) -> Chicago (2)
+		TESTshortestPath("Washington", "Atlanta"); // Washington -> Dallas (1300) -> Austin (1300 + 200 = 1500)
+												   // -> Houston (1500 + 160 = 1660) -> Atlanta (1660 + 180 = 1840)
 	
 		
 		// 
