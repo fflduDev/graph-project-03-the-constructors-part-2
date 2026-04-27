@@ -226,6 +226,15 @@ public class ListBasedDiGraph implements DiGraph {
 	@Override
 	public int shortestPath(GraphNode fromNode, GraphNode toNode) {
 		// TODO Auto-generated method stub
+		GraphNode targetFromNode = getNode(fromNode.getValue());
+		GraphNode targetToNode = getNode(toNode.getValue());
+		Queue<GraphNode> queue = new LinkedList<>();
+		Set<GraphNode> visitedNodes = new HashSet<>();
+		Map<GraphNode, GraphNode> visited = new HashMap<>();
+		Map<GraphNode, GraphNode> unvisited = new HashMap<>();	
+		
+		
+		
 		return 0;
 	}
 
