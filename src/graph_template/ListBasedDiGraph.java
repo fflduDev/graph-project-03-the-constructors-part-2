@@ -246,7 +246,7 @@ public class ListBasedDiGraph implements DiGraph {
 			List<GraphNode> neighborList = current.getNeighbors();
 			
 			// originally used visitedNodes cause I was doing similar to fewest hops but i realizes it never influenced answer.
-			// makes me think it might not actually be settling like dijsktra algorithim, but it does take the shortest path
+			// makes me think it might not actually be settling like dijkstra algorithm, but it does take the shortest path
 			
 //			if(!visitedNodes.contains(current)) {
 //				visitedNodes.add(current);
@@ -270,7 +270,8 @@ public class ListBasedDiGraph implements DiGraph {
 				
 			}
  		}
-		distance=nodeDistance.get(targetToNode);
+		distance += nodeDistance.get(targetToNode);
+		// Found the issue! Assigned rather than added to distance var. Good stuff :)
 		
 		
 		
