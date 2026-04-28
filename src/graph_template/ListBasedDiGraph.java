@@ -270,11 +270,7 @@ public class ListBasedDiGraph implements DiGraph {
 				
 			}
  		}
-		distance += nodeDistance.get(targetToNode);
-		// Found the issue! Assigned rather than added to distance var. Good stuff :)
-		
-		
-		
+		distance = nodeDistance.get(targetToNode);
 		
 		return distance;
 	}
