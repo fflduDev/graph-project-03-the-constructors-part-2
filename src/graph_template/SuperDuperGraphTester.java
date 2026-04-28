@@ -63,6 +63,12 @@ public class SuperDuperGraphTester {
 												   // -> Houston (1500 + 160 = 1660) -> Atlanta (1660 + 180 = 1840)
 	
 		
+		//Additional Shortest Path Tests
+		TESTshortestPath("Austin", "Chicago"); //1100 
+		TESTshortestPath("Chicago", "Houston"); //2580
+		TESTshortestPath("Washington", "Chicago"); //2200
+	
+		
 		// 
 		//ADD MORE TESTS HERE!!!
 		//

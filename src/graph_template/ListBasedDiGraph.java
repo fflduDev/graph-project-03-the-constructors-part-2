@@ -1,11 +1,13 @@
 package graph_template;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
 
@@ -224,18 +226,56 @@ public class ListBasedDiGraph implements DiGraph {
 	}
 
 	@Override
+	//I am using the algorithm from the link on slides. I am taking that structure and turning into Java
 	public int shortestPath(GraphNode fromNode, GraphNode toNode) {
 		// TODO Auto-generated method stub
 		GraphNode targetFromNode = getNode(fromNode.getValue());
 		GraphNode targetToNode = getNode(toNode.getValue());
-		Queue<GraphNode> queue = new LinkedList<>();
-		Set<GraphNode> visitedNodes = new HashSet<>();
-		Map<GraphNode, GraphNode> visited = new HashMap<>();
-		Map<GraphNode, GraphNode> unvisited = new HashMap<>();	
+		int distance=0;
+		
+		Map<GraphNode, Integer> nodeDistance = new HashMap<>();//will have distance from node
+		PriorityQueue<GraphNode> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(nodeDistance::get));
+		//Set<GraphNode> visitedNodes = new HashSet<>();
+		 
+		nodeDistance.put(targetFromNode, 0);
+		priorityQueue.add(targetFromNode);
+		
+		while (priorityQueue.peek() != null) {  
+			 
+			GraphNode current = priorityQueue.poll();
+			List<GraphNode> neighborList = current.getNeighbors();
+			
+			// originally used visitedNodes cause I was doing similar to fewest hops but i realizes it never influenced answer.
+			// makes me think it might not actually be settling like dijsktra algorithim, but it does take the shortest path
+			
+//			if(!visitedNodes.contains(current)) {
+//				visitedNodes.add(current);
+//			}
+			
+			for(GraphNode neighbor : neighborList)
+			{
+				//if(!visitedNodes.contains(neighbor))
+				{
+					int weight = current.getDistanceToNeighbor(neighbor);
+		            int newDistance = nodeDistance.get(current) + weight;
+		            
+					if(!nodeDistance.containsKey(neighbor) ||newDistance<nodeDistance.get(neighbor)) {
+						nodeDistance.put(neighbor, newDistance);
+						priorityQueue.add(neighbor);
+					}
+					
+				}
+				
+				
+				
+			}
+ 		}
+		distance=nodeDistance.get(targetToNode);
 		
 		
 		
-		return 0;
+		
+		return distance;
 	}
 
  
