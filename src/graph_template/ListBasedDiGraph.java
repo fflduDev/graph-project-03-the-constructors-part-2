@@ -63,6 +63,11 @@ public class ListBasedDiGraph implements DiGraph {
 		GraphNode targetFromNode = getNode(fromNode.getValue());
 		GraphNode targetToNode = getNode(toNode.getValue());
 	 	 
+		if(targetFromNode == null || targetToNode == null)
+		{
+			return false;
+		}
+		
 		targetFromNode.addNeighbor(targetToNode, weight);
 	
 		return true;
@@ -122,12 +127,14 @@ public class ListBasedDiGraph implements DiGraph {
 //				{
 //					return true;
 //				}
-				// obsolete; we can't say this is necessarily
-				// true, because a node may very well not have
-				// a directed route back to itself (dead ends).
+//				// obsolete; we can't say this is necessarily
+//				// true, because a node may very well not have
+//				// a directed route back to itself (dead ends).
+
+				GraphNode targetFromNode = getNode(fromNode.getValue());
 				
-				queue.add(fromNode);
-				visitedNodes.add(fromNode);
+				queue.add(targetFromNode);
+				visitedNodes.add(targetFromNode);
 				List<GraphNode> neighborList;
 
 				//start from the targetFromNode
